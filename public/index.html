@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>Video Platform</h1>
+                <div class="user-info">
+                    <span id="userName">Guest</span>
+                    <span id="userPlan" class="plan-badge">Free</span>
+                    <button id="loginBtn">Login</button>
+                    <button id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login / Register</h2>
+                <div style="margin-bottom: 1rem;">
+                    <button id="showLogin" class="active-tab">Login</button>
+                    <button id="showRegister" class="inactive-tab">Register</button>
+                </div>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <form id="registerForm" style="display: none;">
+                    <input type="text" id="registerName" placeholder="Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="tel" id="registerPhone" placeholder="Phone Number" required>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+                <div id="otpSection" style="display: none;">
+                    <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="6">
+                    <button id="verifyOtpBtn">Verify OTP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription Modal -->
+        <div id="subscriptionModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Upgrade Plan</h2>
+                <div class="plans">
+                    <div class="plan-card" data-plan="bronze" data-amount="10">
+                        <h3>Bronze</h3>
+                        <p>7 minutes watch time</p>
+                        <p class="price">₹10</p>
+                        <button class="upgrade-btn">Upgrade</button>
+                    </div>
+                    <div class="plan-card" data-plan="silver" data-amount="50">
+                        <h3>Silver</h3>
+                        <p>10 minutes watch time</p>
+                        <p class="price">₹50</p>
+                        <button class="upgrade-btn">Upgrade</button>
+                    </div>
+                    <div class="plan-card" data-plan="gold" data-amount="100">
+                        <h3>Gold</h3>
+                        <p>Unlimited watch time</p>
+                        <p class="price">₹100</p>
+                        <button class="upgrade-btn">Upgrade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Video Player Section -->
+            <div class="video-section">
+                <div id="videoContainer" class="video-container">
+                    <video id="videoPlayer" controls>
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div id="videoOverlay" class="video-overlay"></div>
+                </div>
+                
+                <div class="video-controls">
+                    <button id="downloadBtn" class="btn-primary">Download Video</button>
+                    <button id="upgradeBtn" class="btn-secondary">Upgrade Plan</button>
+                    <button id="voipBtn" class="btn-secondary">Start Video Call</button>
+                </div>
+
+                <div class="video-info">
+                    <h2 id="videoTitle">Sample Video</h2>
+                    <p id="watchTimeInfo">Watch Time Remaining: <span id="remainingTime">5:00</span></p>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div id="commentsSection" class="comments-section" style="display: none;">
+                <h3>Comments</h3>
+                <div class="comment-form">
+                    <input type="text" id="commentInput" placeholder="Write a comment...">
+                    <button id="submitComment">Post</button>
+                </div>
+                <div id="commentsList" class="comments-list"></div>
+            </div>
+        </main>
+
+        <!-- VoIP Modal -->
+        <div id="voipModal" class="modal">
+            <div class="modal-content voip-modal">
+                <span class="close">&times;</span>
+                <h2>Video Call</h2>
+                <div class="voip-controls">
+                    <input type="text" id="roomIdInput" placeholder="Enter Room ID or Create New">
+                    <button id="joinRoomBtn">Join Room</button>
+                    <button id="shareScreenBtn" style="display: none;">Share Screen</button>
+                    <button id="recordBtn" style="display: none;">Start Recording</button>
+                    <button id="stopRecordBtn" style="display: none;">Stop Recording</button>
+                </div>
+                <div class="video-grid">
+                    <video id="localVideo" autoplay muted></video>
+                    <video id="remoteVideo" autoplay></video>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profile Modal -->
+        <div id="profileModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>My Profile</h2>
+                <div class="profile-section">
+                    <h3>Downloaded Videos</h3>
+                    <div id="downloadsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
